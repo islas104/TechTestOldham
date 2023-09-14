@@ -1,0 +1,28 @@
+version: '3'
+services:
+  # Frontend service
+  quasar-frontend:
+    image: quasarjs/quasar:v2.0
+    container_name: quasar-frontend
+    volumes:
+      - ./quasar-project:/app # Map your Quasar project directory to /app in the container
+    ports:
+      - "80:80" # Expose the frontend on port 80
+    command: ["quasar", "dev"] # Use 'quasar dev' to run the development server
+    depends_on:
+      - quasar-backend # Depends on the backend service
+
+  # Backend service (Node.js example)
+  quasar-backend:
+    image: node:14
+    container_name: quasar-backend
+    working_dir: /app/backend # Set the working directory to your backend directory
+    volumes:
+      - ./backend:/app/backend # Map your backend project directory to /app/backend
+    ports:
+      - "3000:3000" # Expose the backend on port 3000
+    command: ["npm", "start"] # Adjust this to your backend start command
+    environment:
+      - NODE_ENV=development
+
+  # Add any other services (e.g., database) your app requires here
